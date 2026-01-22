@@ -3,11 +3,26 @@ package com.overprintVennDemo;
 import com.pdftron.pdf.*;
 import com.pdftron.sdf.SDFDoc;
 import com.pdftron.sdf.Obj;
-import com.pdftron.common.*;
-import java.util.*;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class OverprintVennDemo {
+
+    static void createCurveTo(double x1, double y1, double x2, double y2, double x3, double y3, StringBuilder sb) {
+        // x1, y1, x2, y2, x3, y3 c
+        sb.append(x1).append(' ')
+        .append(y1).append(' ')
+        .append(x2).append(' ')
+        .append(y2).append(' ')
+        .append(x3).append(' ')
+        .append(y3)
+        .append(" c\n");
+        //  c = PDF path operator curveTo. 
+        // 1. "Start coordinates, control point pulling curve as it leaves start"
+        // 2. "End coordinates, control point pulling curve as it approaches end"
+        // 3. Ending point of curve
+        // Syntax in PDF: x1, y1, x2, y2, x3, y3 c
+    }
 
     static double mmToUnits(double mm) {
     return mm / 25.4 * 72.0;
@@ -109,31 +124,46 @@ public class OverprintVennDemo {
         sb.append(xCoordinate12h).append(' ').append(yCoordinate12h).append(" m\n");
         //  m = PDF path operator moveTo. "Move the starting point to the specific coordinates"
 
-        // Top-right
-        sb.append(xCoordinate12h + offsetBeforePlacingCtrlPt).append(' ').append(yCoordinate12h).append(' ')
-                .append(xCoordinate12_15h).append(' ').append(yCoordinate12_15h + offsetBeforePlacingCtrlPt).append(' ')
-                .append(xCoordinate12_15h).append(' ').append(yCoordinate12_15h).append(" c\n");
-
-        //  c = PDF path operator curveto. 
-        // 1. "Start coordinates, control point pulling curve as it leaves start"
-        // 2. "End coordinates, control point pulling curve as it approaches end"
-        // 3. Ending point of curve
-        // Syntax in PDF: x1, y1, x2, y2, x3, y3 c
-
+        // Top
+        createCurveTo(
+                xCoordinate12h + offsetBeforePlacingCtrlPt, 
+                yCoordinate12h, 
+                xCoordinate12_15h, 
+                yCoordinate12_15h + offsetBeforePlacingCtrlPt, 
+                xCoordinate12_15h, 
+                yCoordinate12_15h, 
+                sb);
+                
         // Bottom-right
-        sb.append(xCoordinate12_15h).append(' ').append(yCoordinate12_15h - offsetBeforePlacingCtrlPt).append(' ')
-                .append(xCoordinate12_30h + offsetBeforePlacingCtrlPt).append(' ').append(yCoordinate12_30h).append(' ')
-                .append(xCoordinate12_30h).append(' ').append(yCoordinate12_30h).append(" c\n");
+        createCurveTo(
+                xCoordinate12_15h, 
+                yCoordinate12_15h - offsetBeforePlacingCtrlPt, 
+                xCoordinate12_30h + offsetBeforePlacingCtrlPt, 
+                yCoordinate12_30h, 
+                xCoordinate12_30h, 
+                yCoordinate12_30h, 
+                sb);
 
         // Bottom-left
-        sb.append(xCoordinate12_30h - offsetBeforePlacingCtrlPt).append(' ').append(yCoordinate12_30h).append(' ')
-                .append(xCoordinate12_45).append(' ').append(yCoordinate12_15h - offsetBeforePlacingCtrlPt).append(' ')
-                .append(xCoordinate12_45).append(' ').append(yCoordinate12_45).append(" c\n");
+        createCurveTo(
+                xCoordinate12_30h - offsetBeforePlacingCtrlPt, 
+                yCoordinate12_30h, 
+                xCoordinate12_45, 
+                yCoordinate12_45 - offsetBeforePlacingCtrlPt, 
+                xCoordinate12_45, 
+                yCoordinate12_45, 
+                sb);
+
 
         // Top-left
-        sb.append(xCoordinate12_45).append(' ').append(yCoordinate12_45 + offsetBeforePlacingCtrlPt).append(' ')
-                .append(xCoordinate12h - offsetBeforePlacingCtrlPt).append(' ').append(yCoordinate12h).append(' ')
-                .append(xCoordinate12h).append(' ').append(yCoordinate12h).append(" c\n");
+        createCurveTo(
+                xCoordinate12_45, 
+                yCoordinate12_45 + offsetBeforePlacingCtrlPt, 
+                xCoordinate12h - offsetBeforePlacingCtrlPt, 
+                yCoordinate12h, 
+                xCoordinate12h, 
+                yCoordinate12h, 
+                sb);
 
         // Fill the path
         sb.append("f\n");
