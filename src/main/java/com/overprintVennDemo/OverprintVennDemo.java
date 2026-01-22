@@ -54,8 +54,8 @@ public class OverprintVennDemo {
         
         double pageWidth = page.getPageWidth();
         double pageHeight = page.getPageHeight();
-        double pageCentreHorizontally = pageWidth / 2.0;
-        double pageCentreVertically = pageHeight / 2.0;
+        double pageCentreVertically = pageWidth / 2.0;
+        double pageCentreHorizontally = pageHeight / 2.0;
         double radiusOfCircle = Math.min(pageWidth, pageHeight) * 0.2;
         double circleOffset = radiusOfCircle * 0.4;
 
@@ -82,16 +82,16 @@ public class OverprintVennDemo {
 
         // Use method below, appendCircle 
         // Use string builder you have started, sb 
-        // Have the circle offset based on whether it's the 1rst or 2nd one, (pageCentreHorizontally - circleOffset) or (pageCentreHorizontally + circleOffset)
-        // Both vertically laid the same way, pageCentreVertically
+        // Have the circle offset based on whether it's the 1rst or 2nd one, (pageCentreVertically - circleOffset) or (pageCentreVertically + circleOffset)
+        // Both vertically laid the same way, pageCentreHorizontally
         // The radius of the circle you would like to have, radiusOfCircle
         // "1 0 0 0 k\n" for cyan, "0 1 0 0 k\n" for magenta, CMYK colour operators
 
-        appendCircle(sb, pageCentreHorizontally - circleOffset, pageCentreVertically, radiusOfCircle, "1 0 0 0 k\n");
+        appendCircle(sb, pageCentreVertically - circleOffset, pageCentreHorizontally, radiusOfCircle, "1 0 0 0 k\n");
 
         sb.append("/graphicStateForCircleDrawing gs\n");
 
-        appendCircle(sb, pageCentreHorizontally + circleOffset, pageCentreVertically, radiusOfCircle, "0 1 0 0 k\n");
+        appendCircle(sb, pageCentreVertically + circleOffset, pageCentreHorizontally, radiusOfCircle, "0 1 0 0 k\n");
 
         Obj contents = doc.createIndirectStream(sb.toString().getBytes("UTF-8"));
         
@@ -102,25 +102,27 @@ public class OverprintVennDemo {
     }
 
     // Append a Bezier-approximated circle path with fill color line included.
-    public static void appendCircle(StringBuilder sb, double pageCentreHorizontally, double pageCentreVertically,
+    public static void appendCircle(StringBuilder sb, double pageCentreVertically, double pageCentreHorizontally,
             double radiusOfCircle, String colorLine) {
 
         // We are drawing a circle. Think of each 90° point as the points on an analog clock.
-        double xCoordinate12h = pageCentreHorizontally;
-        double yCoordinate12h = pageCentreVertically + radiusOfCircle;
-        double xCoordinate3h = pageCentreHorizontally + radiusOfCircle;
-        double yCoordinate3h = pageCentreVertically;
-        double xCoordinate6h = pageCentreHorizontally;
-        double yCoordinate6h = pageCentreVertically - radiusOfCircle;
-        double xCoordinate9h = pageCentreHorizontally - radiusOfCircle;
-        double yCoordinate9h = pageCentreVertically;
-
-        double kappa = 0.5522847498307936;
+        double xCoordinate12h = pageCentreVertically;
+        double yCoordinate12h = pageCentreHorizontally + radiusOfCircle;
+        double xCoordinate3h = pageCentreVertically + radiusOfCircle;
+        double yCoordinate3h = pageCentreHorizontally;
+        double xCoordinate6h = pageCentreVertically;
+        double yCoordinate6h = pageCentreHorizontally - radiusOfCircle;
+        double xCoordinate9h = pageCentreVertically - radiusOfCircle;
+        double yCoordinate9h = pageCentreHorizontally;
+        // See demo/src/main/resources/diagram_plot_points.jpg
+        
+        double kappa = 0.552284749831;
         double offsetBeforePlacingCtrlPt = radiusOfCircle * kappa;
 
         // kappa is the fraction of the radius you move the Bezier control points away from each 90° point.
         // That way, the four cubic Beziers look almost exactly like a true circle.
         // https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Properties, 4(√2 − 1) / 3
+        // see demo/src/main/resources/approximate_circle_with_bezier_curve.png
 
         // Set CMYK fill color
         sb.append(colorLine);
