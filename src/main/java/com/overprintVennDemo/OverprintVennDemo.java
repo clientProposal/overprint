@@ -8,6 +8,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class OverprintVennDemo {
 
+    static void createMoveTo(double x, double y, StringBuilder sb) {
+        sb.append(x).append(' ').append(y).append(" m\n");
+    } 
+
     static void createCurveTo(double x1, double y1, double x2, double y2, double x3, double y3, StringBuilder sb) {
         // x1, y1, x2, y2, x3, y3 c
         sb.append(x1).append(' ')
@@ -90,6 +94,7 @@ public class OverprintVennDemo {
         appendCircle(sb, pageCentreHorizontally + circleOffset, pageCentreVertically, radiusOfCircle, "0 1 0 0 k\n");
 
         Obj contents = doc.createIndirectStream(sb.toString().getBytes("UTF-8"));
+        
         pageDict.put("Contents", contents);
 
         doc.save(outPath, SDFDoc.SaveMode.LINEARIZED, null);
@@ -121,7 +126,7 @@ public class OverprintVennDemo {
         sb.append(colorLine);
 
         // Top
-        sb.append(xCoordinate12h).append(' ').append(yCoordinate12h).append(" m\n");
+        createMoveTo(xCoordinate12h, yCoordinate12h, sb);
         //  m = PDF path operator moveTo. "Move the starting point to the specific coordinates"
 
         // Top
@@ -153,7 +158,6 @@ public class OverprintVennDemo {
                 xCoordinate12_45, 
                 yCoordinate12_45, 
                 sb);
-
 
         // Top-left
         createCurveTo(
