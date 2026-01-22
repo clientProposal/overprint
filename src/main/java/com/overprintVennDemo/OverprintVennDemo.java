@@ -108,12 +108,12 @@ public class OverprintVennDemo {
         // We are drawing a circle. Think of each 90° point as the points on an analog clock.
         double xCoordinate12h = pageCentreHorizontally;
         double yCoordinate12h = pageCentreVertically + radiusOfCircle;
-        double xCoordinate12_15h = pageCentreHorizontally + radiusOfCircle;
-        double yCoordinate12_15h = pageCentreVertically;
-        double xCoordinate12_30h = pageCentreHorizontally;
-        double yCoordinate12_30h = pageCentreVertically - radiusOfCircle;
-        double xCoordinate12_45 = pageCentreHorizontally - radiusOfCircle;
-        double yCoordinate12_45 = pageCentreVertically;
+        double xCoordinate3h = pageCentreHorizontally + radiusOfCircle;
+        double yCoordinate3h = pageCentreVertically;
+        double xCoordinate6h = pageCentreHorizontally;
+        double yCoordinate6h = pageCentreVertically - radiusOfCircle;
+        double xCoordinate9h = pageCentreHorizontally - radiusOfCircle;
+        double yCoordinate9h = pageCentreVertically;
 
         double kappa = 0.5522847498307936;
         double offsetBeforePlacingCtrlPt = radiusOfCircle * kappa;
@@ -133,36 +133,36 @@ public class OverprintVennDemo {
         createCurveTo(
                 xCoordinate12h + offsetBeforePlacingCtrlPt, 
                 yCoordinate12h, 
-                xCoordinate12_15h, 
-                yCoordinate12_15h + offsetBeforePlacingCtrlPt, 
-                xCoordinate12_15h, 
-                yCoordinate12_15h, 
+                xCoordinate3h, 
+                yCoordinate3h + offsetBeforePlacingCtrlPt, 
+                xCoordinate3h, 
+                yCoordinate3h, 
                 sb);
                 
         // Bottom-right
         createCurveTo(
-                xCoordinate12_15h, 
-                yCoordinate12_15h - offsetBeforePlacingCtrlPt, 
-                xCoordinate12_30h + offsetBeforePlacingCtrlPt, 
-                yCoordinate12_30h, 
-                xCoordinate12_30h, 
-                yCoordinate12_30h, 
+                xCoordinate3h, 
+                yCoordinate3h - offsetBeforePlacingCtrlPt, 
+                xCoordinate6h + offsetBeforePlacingCtrlPt, 
+                yCoordinate6h, 
+                xCoordinate6h, 
+                yCoordinate6h, 
                 sb);
 
         // Bottom-left
         createCurveTo(
-                xCoordinate12_30h - offsetBeforePlacingCtrlPt, 
-                yCoordinate12_30h, 
-                xCoordinate12_45, 
-                yCoordinate12_45 - offsetBeforePlacingCtrlPt, 
-                xCoordinate12_45, 
-                yCoordinate12_45, 
+                xCoordinate6h - offsetBeforePlacingCtrlPt, 
+                yCoordinate6h, 
+                xCoordinate9h, 
+                yCoordinate9h - offsetBeforePlacingCtrlPt, 
+                xCoordinate9h, 
+                yCoordinate9h, 
                 sb);
 
         // Top-left
         createCurveTo(
-                xCoordinate12_45, 
-                yCoordinate12_45 + offsetBeforePlacingCtrlPt, 
+                xCoordinate9h, 
+                yCoordinate9h + offsetBeforePlacingCtrlPt, 
                 xCoordinate12h - offsetBeforePlacingCtrlPt, 
                 yCoordinate12h, 
                 xCoordinate12h, 
